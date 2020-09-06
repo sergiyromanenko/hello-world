@@ -16,6 +16,7 @@
   <description>Webapp.</description>
 
   <build>
+    <defaultGoal>install</defaultGoal>
     <finalName>${project.artifactId}</finalName>
 
     <plugins>
