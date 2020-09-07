@@ -27,21 +27,21 @@ node {
       steps {
           sh '${mvnHome}/bin/mvn -Dmaven.test.failure.ignore=true install'
       }
-      post {
-          success {
-              junit 'target/surefire-reports/**/*.xml'
-          }
-      }
+//      post {
+//          success {
+//              junit 'target/surefire-reports/**/*.xml'
+//          }
+//      }
    }
 
-   stage('artifact') {
-      archive 'target/*.war'
-   }
+//   stage('artifact') {
+//      archive 'target/*.war'
+//   }
 
-   stage ('deploy'){
-        echo 'deployment started'
+//   stage ('deploy'){
+//        echo 'deployment started'
  //       cp webapp.war /opt/apache-tomcat-8.5.57/webapps/
-   }
+//   }
 }
 
 
