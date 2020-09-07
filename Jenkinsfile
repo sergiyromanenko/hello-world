@@ -39,8 +39,9 @@ node {
    }
 
    stage ('deploy'){
-   echo 'deployment started'
-       cp webapp.war /opt/apache-tomcat-8.5.57/webapps/
+        echo 'deployment started'
+        cp webapp.war /opt/apache-tomcat-8.5.57/webapps/
    }
+}
 }
 
