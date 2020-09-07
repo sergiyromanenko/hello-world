@@ -3,7 +3,6 @@ node {
     tools {
         maven '/opt/maven/apache-maven-3.6.3'
     }
-   def mvnHome
 
    stage ('Initialize') {
        steps {
@@ -14,6 +13,8 @@ node {
            '''
        }
    }
+
+   def mvnHome = tool 'M2_HOME'
 
    stage('getscm') { // for display purposes
       // Get some code from a GitHub repository
