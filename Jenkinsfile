@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         maven '/opt/maven/apache-maven-3.6.3'
-        jdk '1.8.0_265'
+        jdk 'jdk-1.8.0_265'
     }
     stages {
         stage ('Initialize') {
@@ -10,6 +10,7 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
+                    sh 'java -version'
                 '''
             }
         }
