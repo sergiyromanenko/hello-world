@@ -45,7 +45,7 @@ pipeline {
 //              junit 'target/surefire-reports/**/*.xml'
 //          }
 //      }
-   }
+//   }
 
 //   stage('artifact') {
 //      archive 'target/*.war'
@@ -55,6 +55,6 @@ pipeline {
 //        echo 'deployment started'
  //       cp webapp.war /opt/apache-tomcat-8.5.57/webapps/
 //   }
-}
+//}
 
 */
