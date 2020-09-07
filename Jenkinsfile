@@ -1,4 +1,4 @@
-node {
+pipeline {
     agent any
     tools {
         maven '/opt/maven/apache-maven-3.6.3'
@@ -19,7 +19,7 @@ node {
    stage('getscm') { // for display purposes
       // Get some code from a GitHub repository
       git 'https://github.com/sergiyromanenko/hello-world.git'
-      mvnHome = tool 'maven'
+//      mvnHome = tool 'maven'
    }
 
    stage('Build') {
