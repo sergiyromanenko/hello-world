@@ -32,7 +32,7 @@ pipeline {
             // (within the /var/jenkins_home/workspace/simple-java-maven-app directory in the Jenkins container).
             post {
                 success {
-                    junit 'target/surefire-reports/*.xml' 
+                    junit '/var/jenkins/workspace/Deploy_Pipeline_On_Tomcat_VM/webapp/target/surefire-reports/*.xml' 
                 }
             }
         }
