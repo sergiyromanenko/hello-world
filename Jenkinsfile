@@ -28,6 +28,8 @@ pipeline {
                 sh 'mvn test' 
             }
             // If the maven build succeeded, archive the JUnit test reports for display in the Jenkins web UI.
+            // This command generates a JUnit XML report, which is saved to the target/surefire-reports directory
+            // (within the /var/jenkins_home/workspace/simple-java-maven-app directory in the Jenkins container).
             post {
                 success {
                     junit 'target/surefire-reports/*.xml' 
