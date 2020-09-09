@@ -7,10 +7,14 @@ pipeline {
         jdk 'jdk8' 
     }
     environment {
+        // This can be nexus3 or nexus2
         NEXUS_VERSION = "nexus3"
+        // This can be http or https
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "nx.tehno.top"
+        // Nexus Repository where we will upload the artifact
         NEXUS_REPOSITORY = "Test-Maven-Snapshot"
+        // Jenkins credential id to authenticate to Nexus OSS
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
     }
     stages {
@@ -64,11 +68,17 @@ pipeline {
                            printenv
                       """
                       script {
+
+                          // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
                           pom = readMavenPom file: "pom.xml";
                           echo "*** packaging: group: ${pom.groupId}, ${pom.packaging}, version ${pom.version}";
-                          filesByGlob = findFiles(glob: "$WORKSPACE/*/target/*.${pom.packaging}");
+                          // Find built artifact under target folder
+                          filesByGlob = findFiles(glob: "SNAPSHOT/*.${pom.packaging}");
+                          // Print some info from the artifact found
                           echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                          // Extract the path from the File found
                           artifactPath = filesByGlob[0].path;
+                          // Assign to a boolean response verifying If the artifact name exists
                           artifactExists = fileExists artifactPath;
                           if(artifactExists) {
                               echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
@@ -81,10 +91,13 @@ pipeline {
                                   repository: NEXUS_REPOSITORY,
                                   credentialsId: NEXUS_CREDENTIAL_ID,
                                   artifacts: [
+                                   // Artifact generated such as .jar, .ear and .war files.
                                       [artifactId: pom.artifactId,
                                       classifier: 'debug',
                                       file: artifactPath,
                                       type: pom.packaging],
+
+                                      // Lets upload the pom.xml file for additional information for Transitive dependencies
                                       [artifactId: pom.artifactId,
                                       classifier: 'debug',
                                       file: "pom.xml",
