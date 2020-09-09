@@ -20,7 +20,9 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                ''' 
+                    cd ~
+                    printenv
+                '''
             }
         }
 
@@ -29,13 +31,21 @@ pipeline {
             steps {
                 sh "mvn clean install package -DskipTests=true"
          //       sh 'mvn -Dmaven.test.failure.ignore=true install'
+                sh """
+                  cd ~
+                  printenv
+                """
             }
         }
         
         
         stage('Test') { 
             steps {
-                sh 'mvn test' 
+                sh 'mvn test'
+                sh """
+                  cd ~
+                  printenv
+                """
             }
             // If the maven build succeeded, archive the JUnit test reports for display in the Jenkins web UI.
             // This command generates a JUnit XML report, which is saved to the target/surefire-reports directory
@@ -49,6 +59,10 @@ pipeline {
         
               stage("Publish to Nexus Repository Manager") {
                   steps {
+                      sh """
+                           cd ~
+                           printenv
+                      """
                       script {
                           pom = readMavenPom file: "pom.xml";
                           filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
