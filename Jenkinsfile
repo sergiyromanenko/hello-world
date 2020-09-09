@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'node2-jenkins-slave'
+    }
     tools { 
         maven '/opt/maven/apache-maven-3.6.3' 
         jdk 'jdk8' 
