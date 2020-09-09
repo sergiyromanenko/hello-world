@@ -8,7 +8,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "nx.tehno.top"
-        NEXUS_REPOSITORY = "maven-nexus-repo"
+        NEXUS_REPOSITORY = "Test-Maven-Snapshot"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
     }
     stages {
