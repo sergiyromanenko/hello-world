@@ -74,7 +74,7 @@ pipeline {
                           echo "*** packaging: group: ${pom.groupId}, ${pom.artifactId}, ${pom.version}, ${pom.packaging}";
                           // Find built artifact under target folder
                           //filesByGlob = findFiles(glob: "/home/jenkins/.m2/repository/com/example/maven-project/**/*.${pom.packaging}");
-                          filesByGlob = findFiles(glob: "**/${pom.artifactId}/webapp/${pom.version}/*.${pom.packaging}");
+                          filesByGlob = findFiles(glob: "/home/jordan/.m2/repository/com/example/${pom.artifactId}/webapp/${pom.version}/*.${pom.packaging}");
                           // Print some info from the artifact found
                           echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
                           // Extract the path from the File found
