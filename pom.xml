@@ -11,6 +11,8 @@
   <description>Sample Maven project with a working, deployable site.</description>
   <url>http://www.example.com</url>
 
+
+
   <properties>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
@@ -27,6 +29,18 @@
       <name>Test Project Site</name>
       <url>file:///tmp/maven-project-site</url>
     </site>
+
+    <repository>
+      <id>Test-Maven-Release</id>
+      <name>Releases</name>
+      <url>http://nx.tehno.top/repository/Test-Maven-Release/</url>
+    </repository>
+
+    <snapshotRepository>
+      <id>Test-Maven-Snapshot</id>
+      <name>Snapshot</name>
+      <url>http://nx.tehno.top/repository/Test-Maven-Snapshot/</url>
+    </snapshotRepository>
   </distributionManagement>
 
   <build>
