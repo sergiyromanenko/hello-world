@@ -65,11 +65,11 @@ pipeline {
                                   credentialsId: NEXUS_CREDENTIAL_ID,
                                   artifacts: [
                                       [artifactId: pom.artifactId,
-                                      classifier: '',
+                                      classifier: 'debug',
                                       file: artifactPath,
                                       type: pom.packaging],
                                       [artifactId: pom.artifactId,
-                                      classifier: '',
+                                      classifier: 'debug',
                                       file: "pom.xml",
                                       type: "pom"]
                                   ]
