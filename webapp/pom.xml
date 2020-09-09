@@ -14,7 +14,7 @@
 
 
   <artifactId>webapp</artifactId>
- // <packaging>war</packaging>
+<!--  <packaging>war</packaging>-->
   <packaging>pom</packaging>
   <name>Webapp</name>
   <description>Webapp.</description>

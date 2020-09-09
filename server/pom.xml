@@ -15,7 +15,7 @@
 
 
   <artifactId>server</artifactId>
- // <packaging>jar</packaging>
+<!--  <packaging>jar</packaging>-->
   <packaging>pom</packaging>
   <name>Server</name>
   <description>Logic.</description>
