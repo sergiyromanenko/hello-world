@@ -76,7 +76,7 @@ pipeline {
                           echo "*** packaging: group: ${pom.groupId}, ${pom.artifactId}, ${pom.version}, ${pom.packaging}";
                           // Find built artifact under target folder
                           //filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                          def filesByGlob = findFiles(glob: "/target/*.war");
+                          def filesByGlob = findFiles(glob: "**/target/*.war");
                           filesByGlob.each { f ->
                             echo """
                             ${f.name}   ${f.path}   ${f.directory}
