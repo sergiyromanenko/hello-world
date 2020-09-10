@@ -77,11 +77,10 @@ pipeline {
                           // Find built artifact under target folder
                           //filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
                           filesByGlob = findFiles(glob: "webapp/target/*.${pom.packaging}");
-                          for file in filesByGlob:
+ /*                          for file in filesByGlob:
                             echo """
                             ${filesByGlob[0].name}   ${filesByGlob[0].path}   ${filesByGlob[0].directory}
-
-                            """
+                            """ */
 
                           //filesByGlob = findFiles(glob: "**/${pom.version}/*${pom.version}.${pom.packaging}");
                           // Print some info from the artifact found
