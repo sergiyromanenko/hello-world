@@ -1,7 +1,7 @@
 # Setup Kubernetes (K8s) Cluster on AWS with Kops
 
 
-0. Create a Route53 private hosted zone (you can create Public hosted zone if you have a domain)
+0. Create a Route53 private hosted zone (I have domain name tehno.top for tests at uniregistry.com. It's needed to add NS records there for frankfurt.k8s subdomain. NS records will be provided by AWS Route53 after hosted zone frankfurt.k8s.tehno.top creation. )
    ```sh
    Region --> eu-central-1
    Routeh53 --> hosted zones --> created hosted zone  
