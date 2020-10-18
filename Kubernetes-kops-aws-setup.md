@@ -115,47 +115,26 @@ Finally configure your cluster with: kops update cluster --name frankfurt.k8s.te
       ``` 
 
  
-    ```sh
+   ```sh
 kops has set your kubectl context to frankfurt.k8s.tehno.top
-
 Cluster is starting.  It should be ready in a few minutes.
-
 Suggestions:
  * validate cluster: kops validate cluster --wait 10m
  * list nodes: kubectl get nodes --show-labels
  * ssh to the master: ssh -i ~/.ssh/id_rsa ubuntu@api.frankfurt.k8s.tehno.top
  * the ubuntu user is specific to Ubuntu. If not using Ubuntu please use the appropriate user based on your OS.
  * read about installing addons at: https://kops.sigs.k8s.io/operations/addons.
-    ```
+       ``` 
 
 12. Validate your cluster
 
      ```sh
-      kops validate cluster --wait 10m
-     
+      kops validate cluster --wait 10m 
     ``` 
-      
-          ```sh
-W1018 20:32:16.473865   19995 validate_cluster.go:221] (will retry): cluster not yet healthy
-INSTANCE GROUPS
-NAME			ROLE	MACHINETYPE	MIN	MAX	SUBNETS
-master-eu-central-1a	Master	t2.micro	1	1	eu-central-1a
-master-eu-central-1b	Master	t2.micro	1	1	eu-central-1b
-master-eu-central-1c	Master	t2.micro	1	1	eu-central-1c
-nodes			Node	t2.micro	3	3	eu-central-1a,eu-central-1b,eu-central-1c
 
-NODE STATUS
-NAME						ROLE	READY
-ip-172-20-101-80.eu-central-1.compute.internal	node	True
-ip-172-20-33-83.eu-central-1.compute.internal	master	True
-ip-172-20-41-151.eu-central-1.compute.internal	node	True
-ip-172-20-81-83.eu-central-1.compute.internal	node	True
-ip-172-20-84-133.eu-central-1.compute.internal	master	True
-ip-172-20-98-87.eu-central-1.compute.internal	master	True
-
-    ```
 
 13. To list nodes
+
    ```sh
    kubectl get nodes
    
