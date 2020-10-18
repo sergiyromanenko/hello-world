@@ -124,7 +124,7 @@ Suggestions:
  * ssh to the master: ssh -i ~/.ssh/id_rsa ubuntu@api.frankfurt.k8s.tehno.top
  * the ubuntu user is specific to Ubuntu. If not using Ubuntu please use the appropriate user based on your OS.
  * read about installing addons at: https://kops.sigs.k8s.io/operations/addons.
-       ``` 
+   ``` 
 
 12. Validate your cluster
 
