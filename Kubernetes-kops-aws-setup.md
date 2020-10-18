@@ -112,8 +112,10 @@ Finally configure your cluster with: kops update cluster --name frankfurt.k8s.te
 11. Create kubernetes cluser
     ```sh
     kops update cluster --name frankfurt.k8s.tehno.top --yes
-    
-...
+      ``` 
+
+ 
+    ```sh
 kops has set your kubectl context to frankfurt.k8s.tehno.top
 
 Cluster is starting.  It should be ready in a few minutes.
@@ -124,13 +126,16 @@ Suggestions:
  * ssh to the master: ssh -i ~/.ssh/id_rsa ubuntu@api.frankfurt.k8s.tehno.top
  * the ubuntu user is specific to Ubuntu. If not using Ubuntu please use the appropriate user based on your OS.
  * read about installing addons at: https://kops.sigs.k8s.io/operations/addons.
-
     ```
 
 12. Validate your cluster
+
      ```sh
       kops validate cluster --wait 10m
+     
+    ``` 
       
+          ```sh
 W1018 20:32:16.473865   19995 validate_cluster.go:221] (will retry): cluster not yet healthy
 INSTANCE GROUPS
 NAME			ROLE	MACHINETYPE	MIN	MAX	SUBNETS
