@@ -1,7 +1,8 @@
 # Setup Kubernetes (K8s) Cluster on AWS with Kops
 
 
-0. Create a Route53 private hosted zone (I have domain name tehno.top for tests at uniregistry.com. It's needed to add NS records there for frankfurt.k8s subdomain. NS records will be provided by AWS Route53 after hosted zone frankfurt.k8s.tehno.top creation. )
+0. Create a Route53 private hosted zone (I have domain name tehno.top for tests at uniregistry.com. It's needed to add NS records for frankfurt.k8s subdomain at uniregistry.com. NS records will be provided by AWS Route53 after hosted zone frankfurt.k8s.tehno.top creation. )
+
    ```sh
    Region --> eu-central-1
    Routeh53 --> hosted zones --> created hosted zone  
@@ -13,7 +14,7 @@
 1. Create an IAM user/role  with Route53, EC2, IAM, S3, VPC, AutoScaling full access
 
 ( Role description - Allows EC2 instances to call AWS services on your behalf.)
-
+   ```sh
 Roles -> KopsKubernetesRole-EC2-IAM-S3-Route53:
 AmazonEC2FullAccess
 IAMFullAccess
@@ -24,7 +25,7 @@ AmazonRoute53FullAccess
     ```
 
 2. Create Ubuntu (18.04) EC2 instance and Attach IAM role to ubuntu instance
-(Kubernetes Client)
+(KOPS station for creation and management Kubernetes cluster)
  Region --> eu-central-1
 
 
@@ -54,7 +55,8 @@ AmazonRoute53FullAccess
 
 
 
-7. Create an S3 bucket
+7. Create an S3 bucket.
+
    S3 bucket is used by kubernetes to persist cluster state
    ```sh
     aws s3 mb s3://frankfurt.k8s.tehno.top --region=eu-central-1
