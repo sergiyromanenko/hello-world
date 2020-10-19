@@ -1,4 +1,4 @@
-# Setup Kubernetes (K8s) Cluster on AWS with Kops
+# Setup Kubernetes (K8s) HA Cluster on AWS with Kops
 
 Official documentation: https://kops.sigs.k8s.io/getting_started/aws/
 
