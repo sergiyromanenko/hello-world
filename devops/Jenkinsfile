@@ -16,6 +16,10 @@ pipeline {
         NEXUS_REPOSITORY = "Test-Maven-Snapshot"
         // Jenkins credential id to authenticate to Nexus OSS
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
+        // Jenkins credentials for Nexus Docker Registry
+        DOCKER_TAG = "${getLatestCommitId()}"
+        NEXUS_DOCKER_REGISTRY_HOST = "134.209.238.66:85"
+        NEXUS_DOCKER_CREDENTIAL_ID = 'nexus-docker-registry-user'
     }
     stages {
         stage ('Initialize') {
@@ -63,69 +67,85 @@ pipeline {
        //     }
         }
         
-              stage("Publish to Nexus Repository Manager") {
-                  steps {
-                      sh """
-                           cd ~
-                           printenv
-                      """
-                      script {
+        stage("Publish to Nexus Repository Manager") {
+          steps {
+              sh """
+                   cd ~
+                   printenv
+              """
+              script {
 
-                          // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
-                          pom = readMavenPom file: "pom.xml";
-                          echo "*** packaging: group: ${pom.groupId}, ${pom.artifactId}, ${pom.version}, ${pom.packaging}";
-                          // Find built artifact under target folder
-                          //filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                          def filesByGlob = findFiles(glob: "**/target/*.war");
-                          filesByGlob.each { f ->
-                            echo """
-                            ${f.name}   ${f.path}   ${f.directory}
-                            """
-                            }
+                  // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
+                  pom = readMavenPom file: "pom.xml";
+                  echo "*** packaging: group: ${pom.groupId}, ${pom.artifactId}, ${pom.version}, ${pom.packaging}";
+                  // Find built artifact under target folder
+                  //filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                  def filesByGlob = findFiles(glob: "**/target/*.war");
+                  filesByGlob.each { f ->
+                    echo """
+                    ${f.name}   ${f.path}   ${f.directory}
+                    """
+                    }
 
-                          //filesByGlob = findFiles(glob: "**/${pom.version}/*${pom.version}.${pom.packaging}");
-                          // Print some info from the artifact found
-                          echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-                          // Extract the path from the File found
-                          artifactPath = filesByGlob[0].path;
-                          // Assign to a boolean response verifying If the artifact name exists
-                          artifactExists = fileExists artifactPath;
-                          if(artifactExists) {
-                              echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
-                              nexusArtifactUploader(
-                                  nexusVersion: NEXUS_VERSION,
-                                  protocol: NEXUS_PROTOCOL,
-                                  nexusUrl: NEXUS_URL,
-                                  groupId: pom.groupId,
-                                  version: pom.version,
-                                  repository: NEXUS_REPOSITORY,
-                                  credentialsId: NEXUS_CREDENTIAL_ID,
-                                  artifacts: [
-                                   // Artifact generated such as .jar, .ear and .war files.
-                                    [artifactId: pom.artifactId,
-                                    classifier: 'debug',
-                                    file: artifactPath,
-                                    type: pom.packaging],
+                  //filesByGlob = findFiles(glob: "**/${pom.version}/*${pom.version}.${pom.packaging}");
+                  // Print some info from the artifact found
+                  echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                  // Extract the path from the File found
+                  artifactPath = filesByGlob[0].path;
+                  // Assign to a boolean response verifying If the artifact name exists
+                  artifactExists = fileExists artifactPath;
+                  if(artifactExists) {
+                      echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                      nexusArtifactUploader(
+                          nexusVersion: NEXUS_VERSION,
+                          protocol: NEXUS_PROTOCOL,
+                          nexusUrl: NEXUS_URL,
+                          groupId: pom.groupId,
+                          version: pom.version,
+                          repository: NEXUS_REPOSITORY,
+                          credentialsId: NEXUS_CREDENTIAL_ID,
+                          artifacts: [
+                           // Artifact generated such as .jar, .ear and .war files.
+                            [artifactId: pom.artifactId,
+                            classifier: 'debug',
+                            file: artifactPath,
+                            type: pom.packaging],
 
-                                     [artifactId: pom.artifactId,
-                                     classifier: 'debug',
-                                     file: artifactPath,
-                                     type: "war"],
+                             [artifactId: pom.artifactId,
+                             classifier: 'debug',
+                             file: artifactPath,
+                             type: "war"],
 
-                                      // Lets upload the pom.xml file for additional information for Transitive dependencies
-                                      [artifactId: pom.artifactId,
-                                      classifier: 'debug',
-                                      file: "pom.xml",
-                                      type: "pom"]
-                                  ]
-                              );
-                          } else {
-                              error "*** File: ${artifactPath}, could not be found";
-                          }
-                      }
+                              // Lets upload the pom.xml file for additional information for Transitive dependencies
+                              [artifactId: pom.artifactId,
+                              classifier: 'debug',
+                              file: "pom.xml",
+                              type: "pom"]
+                          ]
+                      );
+                  } else {
+                      error "*** File: ${artifactPath}, could not be found";
                   }
               }
+          }
+        }
 
+
+		stage('Docker - Build'){
+			steps{
+			   withCredentials([string(credentialsId: NEXUS_DOCKER_CREDENTIAL_ID, variable: 'nexusPwd')]) {
+					sh "docker login -u admin -p ${nexusPwd} ${NEXUS_DOCKER_REGISTRY_HOST}"
+			   }
+
+			   sh "docker build . -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG} "
+			}
+		}
+
+		stage('Docker - Push'){
+			steps{
+			   sh "docker push ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
+			}
+		}
         
     }
 }
