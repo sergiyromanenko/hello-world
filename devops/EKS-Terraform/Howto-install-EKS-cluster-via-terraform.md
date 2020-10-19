@@ -52,7 +52,7 @@ You will also need terraform installed.
 
 ## Creating your cluster
 
-Change to the `academy-code-examples/learn-amazon-eks/terraform/nodegroups` directory and run: 
+Run: 
 ```
 terraform init
 ```
