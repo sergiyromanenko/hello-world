@@ -137,7 +137,7 @@ pipeline {
 					sh "docker login -u admin -p ${nexusPwd} ${NEXUS_DOCKER_REGISTRY_HOST}"
 			   }
                cd $WORKSPACE/devops
-			   sh "docker build -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG} ./devops"
+			   sh "docker build . -f ./devops/Dockerfile -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG} ./devops"
 			}
 		}
 
