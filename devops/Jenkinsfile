@@ -139,7 +139,7 @@ pipeline {
 			   sh 'cd $WORKSPACE'
 			   sh 'echo "Service user is $SERVICE_CREDS_USR"'
                sh 'echo "Service password is $SERVICE_CREDS_PSW"'
-			   sh 'docker login -u $SERVICE_CREDS_USR -p $SERVICE_CREDS_PSW ${NEXUS_DOCKER_REGISTRY_HOST}'
+			   sh 'docker login ${NEXUS_DOCKER_REGISTRY_HOST} -u $SERVICE_CREDS_USR -p $SERVICE_CREDS_PSW'
 			   sh "docker build . -f ./devops/Dockerfile -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG} ./devops"
 			}
 		}
