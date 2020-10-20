@@ -132,11 +132,14 @@ pipeline {
 
 
 		stage('Docker - Build'){
+            environment {
+                SERVICE_CREDS = credentials(NEXUS_DOCKER_CREDENTIAL_ID)
+            }
 			steps{
-			   withCredentials([string(credentialsId: NEXUS_DOCKER_CREDENTIAL_ID, variable: 'nexusPwd')]) {
-					sh "docker login -u admin -p ${nexusPwd} ${NEXUS_DOCKER_REGISTRY_HOST}"
-			   }
-               cd $WORKSPACE/devops
+			   sh 'cd $WORKSPACE'
+			   sh 'echo "Service user is $SERVICE_CREDS_USR"'
+               sh 'echo "Service password is $SERVICE_CREDS_PSW"'
+			   sh 'docker login -u $SERVICE_CREDS_USR -p $SERVICE_CREDS_PSW ${NEXUS_DOCKER_REGISTRY_HOST}'
 			   sh "docker build . -f ./devops/Dockerfile -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG} ./devops"
 			}
 		}
