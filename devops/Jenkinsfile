@@ -136,7 +136,7 @@ pipeline {
 			   withCredentials([string(credentialsId: NEXUS_DOCKER_CREDENTIAL_ID, variable: 'nexusPwd')]) {
 					sh "docker login -u admin -p ${nexusPwd} ${NEXUS_DOCKER_REGISTRY_HOST}"
 			   }
-
+               cd $WORKSPACE/devops
 			   sh "docker build . -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG} "
 			}
 		}
