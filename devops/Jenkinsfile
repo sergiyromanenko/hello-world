@@ -133,7 +133,7 @@ pipeline {
 
 		stage('Docker - Build'){
             environment {
-                SERVICE_CREDS = credentials(NEXUS_DOCKER_CREDENTIAL_ID)
+                SERVICE_CREDS = credentials("nexus-user-credentials")
             }
 			steps{
 			   sh 'cd $WORKSPACE'
