@@ -163,18 +163,20 @@ pipeline {
  */
 
        stage('Deploy to K8s'){
-         sshagent(['k8s-ec2-client']) {
-           sh """
-	            DOCKER_IMAGE=${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}
-	            sed -i "s/hwapp-docker-image/\$DOCKER_IMAGE/g" devops/k8s-deployments/deployment.yml
-	       """
+          steps{
+             sshagent(['k8s-ec2-client']) {
+               sh """
+                    DOCKER_IMAGE=${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}
+                    sed -i "s/hwapp-docker-image/\$DOCKER_IMAGE/g" devops/k8s-deployments/deployment.yml
+               """
 
-           sh "scp -o StrictHostKeyChecking=no devops/k8s-deployments/deployments.yml eks@${K8S_CLIENT_IP_ADDRESS}:/home/eks/hwapp/"
-           sh "ssh eks@${K8S_CLIENT_IP_ADDRESS} kubectl apply -f /home/eks/deployments.yml"
+               sh "scp -o StrictHostKeyChecking=no devops/k8s-deployments/deployments.yml eks@${K8S_CLIENT_IP_ADDRESS}:/home/eks/hwapp/"
+               sh "ssh eks@${K8S_CLIENT_IP_ADDRESS} kubectl apply -f /home/eks/deployments.yml"
 
-           sh "scp -o StrictHostKeyChecking=no devops/k8s-deployments/service.yml eks@${K8S_CLIENT_IP_ADDRESS}:/home/eks/hwapp/"
-           sh "ssh eks@${K8S_CLIENT_IP_ADDRESS} kubectl apply -f /home/eks/hwapp/service.yml"
-         }
+               sh "scp -o StrictHostKeyChecking=no devops/k8s-deployments/service.yml eks@${K8S_CLIENT_IP_ADDRESS}:/home/eks/hwapp/"
+               sh "ssh eks@${K8S_CLIENT_IP_ADDRESS} kubectl apply -f /home/eks/hwapp/service.yml"
+             }
+          }
        }
 
     }
