@@ -165,7 +165,7 @@ pipeline {
        stage('Deploy to K8s'){
           steps{
              sh """
-                  sed -i "s/hwapp-docker-tag/\${DOCKER_TAG}/g" devops/k8s-deployments/deployment.yml
+                  sed -i "s/hwapp-docker-tag/\${DOCKER_TAG}/" devops/k8s-deployments/deployment.yml
              """
              sshagent(['k8s-ec2-client']) {
 
