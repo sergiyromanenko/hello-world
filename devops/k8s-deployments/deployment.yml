@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind:
 metadata:
   name: hwapp-deployment
   labels:
@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: hwapp
-          image: hwapp-docker-image
+          image: 134.209.238.66:85/hello-world-app:hwapp-docker-tag
           ports:
             - containerPort: 8080
