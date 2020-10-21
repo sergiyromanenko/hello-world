@@ -153,6 +153,7 @@ pipeline {
 
 
        stage('Deploy to DevDockerHost'){
+         steps{
 
 //           sshagent(['dockerhost-dev']) {
 //           def dockeRm = "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker rm -f hello-world-app"
@@ -166,6 +167,7 @@ pipeline {
            sh "${dockeRm}"
            sh "${dockeRun}"
 //          }
+         ]
        }
 
 
