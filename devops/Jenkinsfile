@@ -141,13 +141,13 @@ pipeline {
 			   sh 'echo "Service user is $SERVICE_CREDS_USR"'
                sh 'echo "Service password is $SERVICE_CREDS_PSW"'
 			   sh 'docker login ${NEXUS_DOCKER_REGISTRY_HOST} -u $SERVICE_CREDS_USR -p $SERVICE_CREDS_PSW'
-			   sh "docker build . -f ./devops/Dockerfile -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
+			   sh "docker build . -f ./devops/Dockerfile -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:DOCKER_TAG"
 			}
 		}
 
 		stage('Docker - Push'){
 			steps{
-			   sh "docker push ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
+			   sh "docker push ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:DOCKER_TAG"
 			}
 		}
 
@@ -165,7 +165,7 @@ pipeline {
        stage('Deploy to K8s'){
           steps{
              sh """
-                  sed -i "s/hwapp-docker-tag/\${DOCKER_TAG}/" devops/k8s-deployments/deployment.yml
+                  sed -i "s/hwapp-docker-tag/DOCKER_TAG/" devops/k8s-deployments/deployment.yml
              """
              sshagent(['k8s-ec2-client']) {
 
