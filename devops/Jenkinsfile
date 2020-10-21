@@ -171,8 +171,8 @@ pipeline {
 
                sh "hostname"
                sh "pwd"
-               sh "scp -o StrictHostKeyChecking=no devops/k8s-deployments/deployments.yml eks@${K8S_CLIENT_IP_ADDRESS}:/home/eks/hwapp/"
-               sh "ssh eks@${K8S_CLIENT_IP_ADDRESS} kubectl apply -f /home/eks/deployments.yml"
+               sh "scp -o StrictHostKeyChecking=no devops/k8s-deployments/deployment.yml eks@${K8S_CLIENT_IP_ADDRESS}:/home/eks/hwapp/"
+               sh "ssh eks@${K8S_CLIENT_IP_ADDRESS} kubectl apply -f /home/eks/deployment.yml"
 
                sh "scp -o StrictHostKeyChecking=no devops/k8s-deployments/service.yml eks@${K8S_CLIENT_IP_ADDRESS}:/home/eks/hwapp/"
                sh "ssh eks@${K8S_CLIENT_IP_ADDRESS} kubectl apply -f /home/eks/hwapp/service.yml"
