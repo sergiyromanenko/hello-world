@@ -167,7 +167,7 @@ pipeline {
            sh "${dockeRm}"
            sh "${dockeRun}"
 //          }
-         ]
+         }
        }
 
 
