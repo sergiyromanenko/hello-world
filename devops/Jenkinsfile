@@ -153,11 +153,11 @@ pipeline {
 
 
        stage('Deploy to DevDockerHost'){
-#           sshagent(['dockerhost-dev']) {
-#           def dockeRm = "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker rm -f hello-world-app"
-#           def dockeRun = "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker run -d -p 8080:8080 --name hello-world-app ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
-#           sh "${dockeRm}"
-#           sh "${dockeRun}"
+//           sshagent(['dockerhost-dev']) {
+//           def dockeRm = "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker rm -f hello-world-app"
+//           def dockeRun = "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker run -d -p 8080:8080 --name hello-world-app ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
+//           sh "${dockeRm}"
+//           sh "${dockeRun}"
 
            def dockeRm = "docker rm -f hello-world-app"
            def dockeRun = "docker run -d -p 8080:8080 --name hello-world-app ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
