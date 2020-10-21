@@ -158,15 +158,16 @@ pipeline {
 //           sshagent(['dockerhost-dev']) {
 //              sh "ssh ec2-user@${DOCKERHOST_IP_ADDRESS} docker rm -f ${CONTAINER_NAME}"
 //              sh "ssh ec2-user@${DOCKERHOST_IP_ADDRESS} docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
-
-            def inspectExitCode = sh script: "docker inspect ${CONTAINER_NAME}", returnStatus: true
-              if (inspectExitCode == 0) {
-                sh "docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:DOCKER_TAG"
-              } else {
+           script {
+               def inspectExitCode = sh script: "docker inspect ${CONTAINER_NAME}", returnStatus: true
+               if (inspectExitCode == 0) {
+                 sh "docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:DOCKER_TAG"
+               } else {
                   sh "docker rm -f hello-world-app"
                   sh "docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:DOCKER_TAG"
-              }
-//         }
+               }
+//           }
+           }
          }
        }
 
