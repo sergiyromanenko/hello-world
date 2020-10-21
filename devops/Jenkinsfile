@@ -20,6 +20,7 @@ pipeline {
         DOCKER_TAG = "${getLatestCommitId()}"
         NEXUS_DOCKER_REGISTRY_HOST = "134.209.238.66:85"
         NEXUS_DOCKER_CREDENTIAL_ID = 'nexus-docker-registry-user'
+        K8S_CLIENT_IP_ADDRESS = "18.195.96.234"
     }
     stages {
         stage ('Initialize') {
@@ -149,7 +150,33 @@ pipeline {
 			   sh "docker push ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
 			}
 		}
-        
+
+/*
+       stage('Deploy to DevDockerHost'){
+           sshagent(['tomcat-dev']) {
+           def dockeRm = "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker rm -f hwapp"
+           def dockeRun = "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker run -d -p 80:8080 --name hwapp ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
+           sh "${dockeRm}"
+           sh "${dockeRun}"
+          }
+       }
+ */
+
+       stage('Deploy to K8s'){
+         sshagent(['k8s-ec2-client']) {
+           sh """
+	            DOCKER_IMAGE=${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}
+	            sed -i "s/hwapp-docker-image/\$DOCKER_IMAGE/g" devops/k8s-deployments/deployment.yml
+	       """
+
+           sh "scp -o StrictHostKeyChecking=no devops/k8s-deployments/deployments.yml eks@${K8S_CLIENT_IP_ADDRESS}:/home/eks/hwapp/"
+           sh "ssh eks@${K8S_CLIENT_IP_ADDRESS} kubectl apply -f /home/eks/deployments.yml"
+
+           sh "scp -o StrictHostKeyChecking=no devops/k8s-deployments/service.yml eks@${K8S_CLIENT_IP_ADDRESS}:/home/eks/hwapp/"
+           sh "ssh eks@${K8S_CLIENT_IP_ADDRESS} kubectl apply -f /home/eks/hwapp/service.yml"
+         }
+       }
+
     }
 }
 

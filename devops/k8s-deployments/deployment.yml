@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hwapp-deployment
+  labels:
+    app: hwapp-label
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hwapp-label
+  template:
+    metadata:
+      labels:
+        app: hwapp-label
+    spec:
+      containers:
+        - name: hwapp
+          image: hwapp-docker-image
+          ports:
+            - containerPort: 8080
