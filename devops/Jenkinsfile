@@ -20,6 +20,7 @@ pipeline {
         DOCKER_TAG = "${getLatestCommitId()}"
         NEXUS_DOCKER_REGISTRY_HOST = "134.209.238.66:85"
         NEXUS_DOCKER_CREDENTIAL_ID = 'nexus-docker-registry-user'
+        CONTAINER_NAME = "hello-world-app"
         K8S_CLIENT_IP_ADDRESS = "18.195.96.234"
     }
     stages {
@@ -155,11 +156,17 @@ pipeline {
        stage('Deploy to DevDockerHost'){
          steps{
 //           sshagent(['dockerhost-dev']) {
-//              sh "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker rm -f hello-world-app"
-//              sh "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker run -d -p 8080:8080 --name hello-world-app ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
-             sh "docker rm -f hello-world-app"
-             sh "docker run -d -p 8080:8080 --name hello-world-app ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:DOCKER_TAG"
-//          }
+//              sh "ssh ec2-user@${DOCKERHOST_IP_ADDRESS} docker rm -f ${CONTAINER_NAME}"
+//              sh "ssh ec2-user@${DOCKERHOST_IP_ADDRESS} docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
+
+            def inspectExitCode = sh script: "docker inspect ${CONTAINER_NAME}", returnStatus: true
+              if (inspectExitCode == 0) {
+                sh "docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:DOCKER_TAG"
+              } else {
+                  sh "docker rm -f hello-world-app"
+                  sh "docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:DOCKER_TAG"
+              }
+//         }
          }
        }
 
