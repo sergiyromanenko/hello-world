@@ -158,7 +158,7 @@ pipeline {
 //              sh "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker rm -f hello-world-app"
 //              sh "ssh ec2-user@${K8S_CLIENT_IP_ADDRESS} docker run -d -p 8080:8080 --name hello-world-app ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
              sh "docker rm -f hello-world-app"
-             sh "docker run -d -p 8080:8080 --name hello-world-app ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
+             sh "docker run -d -p 8080:8080 --name hello-world-app ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:DOCKER_TAG"
 //          }
          }
        }
