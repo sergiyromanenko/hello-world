@@ -19,3 +19,5 @@ spec:
           image: nx.tehno.top/hello-world-app:hwapp-docker-tag
           ports:
             - containerPort: 8080
+      imagePullSecrets:
+        - name: nxregcred
