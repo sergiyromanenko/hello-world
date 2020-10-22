@@ -61,3 +61,7 @@ sudo systemctl stop docker and sudo systemctl start docker.
 For some reason just doing a sudo systemctl restart docker did not work.
 It threw an error about trying to restart the service to quickly. 
 
+
+!!!!!! Same error from kubelets will be during deploy to k8s  !!!!!1
+So order free ssl certificates at https://www.sslforfree.com/ for 90 days 
+and setup https for Docker private registry with Nexus

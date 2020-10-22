@@ -127,6 +127,7 @@ module "eks" {
       asg_desired_capacity          = 2
       asg_max_size                  = 5
       additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
+      key_name                      = var.ec2_aws_key_pair_name
     },
   ]
 
