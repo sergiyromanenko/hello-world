@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: hwapp
-          image: 134.209.238.66:85/hello-world-app:hwapp-docker-tag
+          image: nx.tehno.top/hello-world-app:hwapp-docker-tag
           ports:
             - containerPort: 8080
