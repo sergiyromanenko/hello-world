@@ -103,5 +103,20 @@ terraform destroy
 ```
 To clean up the resources you just created.
 
+___________
 
+## Create the secret to be able to use it to pull image from the docker registry.
+```
+kubectl create secret docker-registry nxregcred \
+  --namespace=jhipster \ # <--
+  --docker-server=docker.pkg.github.com \
+  --docker-username=********* \
+  --docker-password=******* \
+  --docker-email=*****
+```
 
+and add imagePullSecrets in the Deployment.yaml file
+```
+      imagePullSecrets:
+        - name: nxregcred
+```
