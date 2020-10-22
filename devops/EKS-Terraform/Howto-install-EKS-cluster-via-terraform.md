@@ -107,13 +107,18 @@ ___________
 
 ## Create the secret to be able to use it to pull image from the Nexus docker registry.
 ```
-kubectl create secret docker-registry nxregcred \
-  --namespace=jhipster \ # <--
-  --docker-server=docker.pkg.github.com \
-  --docker-username=********* \
-  --docker-password=******* \
-  --docker-email=*****
+$ kubectl create secret docker-registry nxregcred \
+  --namespace='yournamespace' \ # <-- if needed
+  --docker-server='nx.tehno.top' \
+  --docker-username='*********' \
+  --docker-password='*******' \
+  --docker-email='*****'
+
+$ kubectl get secret nxregcred
+NAME        TYPE                             DATA   AGE
+nxregcred   kubernetes.io/dockerconfigjson   1      102s
 ```
+
 
 and add imagePullSecrets in the Deployment.yaml file
 ```
