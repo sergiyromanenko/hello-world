@@ -7,7 +7,7 @@ pipeline {
         jdk 'jdk8' 
     }
     environment {
-        SONARQUBE_TOKEN_ID = "sonarqube-token-helloworld-maven-app"
+        SONARQUBE_TOKEN_ID = credentials("sonarqube-token-helloworld-maven-app")
         // This can be nexus3 or nexus2
         NEXUS_VERSION = "nexus3"
         // This can be http or https
@@ -21,7 +21,7 @@ pipeline {
         DOCKER_TAG = "${getLatestCommitId()}"
         //NEXUS_DOCKER_REGISTRY_HOST = "134.209.238.66:85"
         NEXUS_DOCKER_REGISTRY_HOST = "nx.tehno.top"
-        NEXUS_DOCKER_CREDENTIAL_ID = 'nexus-docker-registry-user'
+        NEXUS_DOCKER_REGISTRY_CREDS = credentials('nexus-docker-registry-user')
         CONTAINER_NAME = "hello-world-app"
         K8S_CLIENT_IP_ADDRESS = "18.195.96.234"
     }
@@ -148,14 +148,12 @@ pipeline {
 
 
 		stage('Docker - Build'){
-            environment {
-                SERVICE_CREDS = credentials("nexus-user-credentials")
-            }
+
 			steps{
 			   sh 'cd $WORKSPACE'
-			   sh 'echo "Service user is $SERVICE_CREDS_USR"'
-               sh 'echo "Service password is $SERVICE_CREDS_PSW"'
-			   sh 'docker login ${NEXUS_DOCKER_REGISTRY_HOST} -u $SERVICE_CREDS_USR -p $SERVICE_CREDS_PSW'
+			   sh 'echo "Service user is $NEXUS_DOCKER_REGISTRY_CREDS_USR"'
+               sh 'echo "Service password is $NEXUS_DOCKER_REGISTRY_CREDS_PSW"'
+			   sh 'docker login ${NEXUS_DOCKER_REGISTRY_HOST} -u $NEXUS_DOCKER_REGISTRY_CREDS_USR -p $NEXUS_DOCKER_REGISTRY_CREDS_PSW'
 			   sh "docker build . -f ./devops/Dockerfile -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:DOCKER_TAG"
 			}
 		}
