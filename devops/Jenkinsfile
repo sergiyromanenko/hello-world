@@ -7,6 +7,7 @@ pipeline {
         jdk 'jdk8' 
     }
     environment {
+        SONARQUBE_TOKEN_ID = "sonarqube-token-helloworld-maven-app"
         // This can be nexus3 or nexus2
         NEXUS_VERSION = "nexus3"
         // This can be http or https
@@ -48,6 +49,18 @@ pipeline {
                   cd ~
                   printenv
                 """
+            }
+        }
+
+
+        stage ('Test Code - SonarQube') {
+            steps {
+                sh """
+                  mvn sonar:sonar \
+                    -Dsonar.projectKey=maven-project \
+                    -Dsonar.host.url=http://sq.tehno.top \
+                    -Dsonar.login=SONARQUBE_TOKEN_ID
+                   """
             }
         }
         
