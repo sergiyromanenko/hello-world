@@ -59,7 +59,7 @@ pipeline {
                   mvn sonar:sonar \
                     -Dsonar.projectKey=maven-project \
                     -Dsonar.host.url=http://sq.tehno.top \
-                    -Dsonar.login=SONARQUBE_TOKEN_ID
+                    -Dsonar.login=${SONARQUBE_TOKEN_ID}
                    """
             }
         }
