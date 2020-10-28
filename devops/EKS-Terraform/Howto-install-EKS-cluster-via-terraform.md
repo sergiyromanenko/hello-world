@@ -81,6 +81,28 @@ kubeconfig_eks-cluster-terraform  main.tf  outputs.tf  terraform.tfstate  variab
  kubectl get nodes
 ```
 
+## Create the secret to be able to use it to pull image from the Nexus docker registry.
+```
+$ kubectl create secret docker-registry nxregcred \
+  --namespace='yournamespace' \ # <-- if needed
+  --docker-server='nx.tehno.top' \
+  --docker-username='*********' \
+  --docker-password='*******' \
+  --docker-email='*****'
+
+$ kubectl get secret nxregcred
+NAME        TYPE                             DATA   AGE
+nxregcred   kubernetes.io/dockerconfigjson   1      102s
+```
+
+
+and add imagePullSecrets in the Deployment.yaml file
+```
+      imagePullSecrets:
+        - name: nxregcred
+```
+
+
 ## Deploying containers to your cluster
 
 You can try deploying the Kubernetes configuration by changing to the folder with yml configs and running:
@@ -103,25 +125,14 @@ terraform destroy
 ```
 To clean up the resources you just created.
 
-___________
 
-## Create the secret to be able to use it to pull image from the Nexus docker registry.
+### !!!ATTENTION!!!
+Before start "terraform destroy" you should delete LoadBalancer for EC2 workers (kubectl delete svc hwapp-service).
+Load balancer was created not by terraform but by AWS for Service.yml (type: LoadBalancer).
+Whithout deleting LoadBalancer will be problem with removing VPC and its elements - internet gateway, subnets.
 ```
-$ kubectl create secret docker-registry nxregcred \
-  --namespace='yournamespace' \ # <-- if needed
-  --docker-server='nx.tehno.top' \
-  --docker-username='*********' \
-  --docker-password='*******' \
-  --docker-email='*****'
-
-$ kubectl get secret nxregcred
-NAME        TYPE                             DATA   AGE
-nxregcred   kubernetes.io/dockerconfigjson   1      102s
+kubectl delete svc hwapp-service
+kubectl delete deploy hwapp-deployment
+kubectl delete secret nxregcred 
 ```
 
-
-and add imagePullSecrets in the Deployment.yaml file
-```
-      imagePullSecrets:
-        - name: nxregcred
-```
