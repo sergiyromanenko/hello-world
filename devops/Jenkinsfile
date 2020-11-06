@@ -154,13 +154,13 @@ pipeline {
 			   sh 'echo "Service user is $NEXUS_DOCKER_REGISTRY_CREDS_USR"'
                sh 'echo "Service password is $NEXUS_DOCKER_REGISTRY_CREDS_PSW"'
 			   sh 'docker login ${NEXUS_DOCKER_REGISTRY_HOST} -u $NEXUS_DOCKER_REGISTRY_CREDS_USR -p $NEXUS_DOCKER_REGISTRY_CREDS_PSW'
-			   sh "docker build . -f ./devops/Dockerfile -t ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:$BUILD_NUMBER"
+			   sh "docker build . -f ./devops/Dockerfile -t ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:$BUILD_NUMBER"
 			}
 		}
 
 		stage('Docker Push to Nexus Docker Registry'){
 			steps{
-			   sh "docker push ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:$BUILD_NUMBER"
+			   sh "docker push ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:$BUILD_NUMBER"
 			}
 		}
 
@@ -169,12 +169,12 @@ pipeline {
          steps{
 //           sshagent(['dockerhost-dev']) {
 //              sh "ssh ec2-user@${DOCKERHOST_IP_ADDRESS} docker rm -f ${CONTAINER_NAME}"
-//              sh "ssh ec2-user@${DOCKERHOST_IP_ADDRESS} docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/hello-world-app:${DOCKER_TAG}"
+//              sh "ssh ec2-user@${DOCKERHOST_IP_ADDRESS} docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:$BUILD_NUMBER"
            script {
                def inspectExitCode = sh script: "docker inspect ${CONTAINER_NAME}", returnStatus: true
                echo "inspectExitCode is ${inspectExitCode}"
                if (inspectExitCode == 0) {
-                 sh "docker rm -f hello-world-app"
+                 sh "docker rm -f ${CONTAINER_NAME}"
                  sh "docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:$BUILD_NUMBER"
                } else {
                   sh "docker run -d -p 8080:8080 --name ${CONTAINER_NAME} ${NEXUS_DOCKER_REGISTRY_HOST}/${CONTAINER_NAME}:$BUILD_NUMBER"
