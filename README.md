@@ -1,4 +1,4 @@
 # maven-project
 
-Simple Maven Project 
-for jenkins pipelines test
+Simple Maven Project with CI/CD pipelines using Git, Jenkins, SonarQube, SonarType,
+Terraform, Docker, AWS Kubernetes (EKS)
