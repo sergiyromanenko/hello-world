@@ -132,10 +132,10 @@ pipeline {
                              file: artifactPath,
                              type: "war"],
 
-/*                              [artifactId: pom.artifactId,
+                              [artifactId: pom.artifactId,
                               classifier: 'debug',
-                              file: artifactPath,
-                              type: "jar"], */
+                              file: "server/target/server.jar",
+                              type: "jar"],
 
                               // Lets upload the pom.xml file for additional information for Transitive dependencies
                               [artifactId: pom.artifactId,
