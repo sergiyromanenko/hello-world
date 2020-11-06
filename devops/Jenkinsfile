@@ -95,8 +95,8 @@ pipeline {
                   pom = readMavenPom file: "pom.xml";
                   echo "*** packaging: group: ${pom.groupId}, artifactId: ${pom.artifactId}, version: ${pom.version}, packaging: ${pom.packaging}";
                   // Find built artifact under target folder
-                  //filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                  def filesByGlob = findFiles(glob: "**/target/*.war");
+                  def filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                  //def filesByGlob = findFiles(glob: "**/target/*.war");
                   filesByGlob.each { f ->
                     echo """
                     name: ${f.name}   path: ${f.path}   directory: ${f.directory}
@@ -122,26 +122,26 @@ pipeline {
                           credentialsId: NEXUS_CREDENTIAL_ID,
                           artifacts: [
                            // Artifact generated such as .jar, .ear and .war files.
-/*                             [artifactId: pom.artifactId,
-                            classifier: 'debug',
-                            file: artifactPath,
-                            type: pom.packaging], */
-
                              [artifactId: pom.artifactId,
                              classifier: 'debug',
                              file: artifactPath,
+                             type: pom.packaging],
+
+                             [artifactId: pom.artifactId,
+                             classifier: '',
+                             file: "webapp/target/webapp.war",
                              type: "war"],
 
                               [artifactId: pom.artifactId,
-                              classifier: 'debug',
+                              classifier: '',
                               file: "server/target/server.jar",
                               type: "jar"],
 
-/*                               // Lets upload the pom.xml file for additional information for Transitive dependencies
+                               // Lets upload the pom.xml file for additional information for Transitive dependencies
                               [artifactId: pom.artifactId,
-                              classifier: 'debug',
+                              classifier: '',
                               file: "pom.xml",
-                              type: "pom"] */
+                              type: "pom"]
                           ]
                       );
                   } else {
