@@ -137,11 +137,11 @@ pipeline {
                               file: "server/target/server.jar",
                               type: "jar"],
 
-                              // Lets upload the pom.xml file for additional information for Transitive dependencies
+/*                               // Lets upload the pom.xml file for additional information for Transitive dependencies
                               [artifactId: pom.artifactId,
                               classifier: 'debug',
                               file: "pom.xml",
-                              type: "pom"]
+                              type: "pom"] */
                           ]
                       );
                   } else {
