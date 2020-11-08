@@ -250,7 +250,8 @@ In the Create User page
 install and configure a few plugins for Nexus in Jenkins. 
 install Nexus Artifact Uploader and Pipeline Utility Steps.
 
-Maven doc:
+Maven docs:
+https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 https://tproger.ru/articles/maven-short-intro/
 
 
