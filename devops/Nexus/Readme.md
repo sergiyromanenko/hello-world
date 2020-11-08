@@ -62,6 +62,6 @@ For some reason just doing a sudo systemctl restart docker did not work.
 It threw an error about trying to restart the service to quickly. 
 
 
-!!!!!! Same error from kubelets will be during deploy to k8s  !!!!!1
-So order free ssl certificates at https://www.sslforfree.com/ for 90 days 
+!!!!!! Same error from kubelets will be during deploy to k8s  !!!!!
+So it's better to order free SSL certificates at https://www.sslforfree.com/ for 90 days 
 and setup https for Docker private registry with Nexus
